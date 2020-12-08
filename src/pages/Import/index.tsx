@@ -11,6 +11,7 @@ import { Container, Title, ImportFileContainer, Footer } from './styles';
 
 import alert from '../../assets/alert.svg';
 import api from '../../services/api';
+import fileSize from 'filesize';
 
 interface FileProps {
   file: File;
@@ -23,19 +24,28 @@ const Import: React.FC = () => {
   const history = useHistory();
 
   async function handleUpload(): Promise<void> {
-    // const data = new FormData();
+    const data = new FormData();
 
-    // TODO
+    console.log(uploadedFiles, ";;;;")
+
+    data.append('file',uploadedFiles[0].file, uploadedFiles[0].name)
 
     try {
-      // await api.post('/transactions/import', data);
+      await api.post('/transactions/import', data);
     } catch (err) {
-      // console.log(err.response.error);
+      console.log(err.response.error);
     }
   }
 
   function submitFile(files: File[]): void {
-    // TODO
+
+    const filesNew = files.map((file) => ({
+      name: file.name,
+      file,
+      readableSize: fileSize(file.size)
+    }))
+
+    setUploadedFiles([...uploadedFiles,...filesNew])
   }
 
   return (

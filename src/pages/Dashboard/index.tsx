@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
 import income from '../../assets/income.svg';
 import outcome from '../../assets/outcome.svg';
@@ -114,16 +114,18 @@ const Dashboard: React.FC = () => {
             </thead>
 
             <tbody>
-              { transactions.map((transaction) => (
-                <>
-                  <tr key={transaction.id}>
-                  <td className="title">{transaction.title}</td>
-                  <td className={`${transaction.type}`}>{transaction.formattedValue}</td>
+              { transactions && transactions.map((transaction, i) => (
+                <Fragment key={transaction.id}>
+                  <tr >
+                  <td className="title" >{transaction.title}</td>
+                  <td className={`${transaction.type}`}>
+                    {transaction.type === 'outcome' && ' - '}
+                    {transaction.formattedValue}</td>
                   {transaction.category ? (<td>{transaction.category.title}</td>): (<td> --- </td>)}
                   <td>{transaction.formattedDate}</td>
                 </tr>
 
-              </>
+              </Fragment>
               ))}
 
             </tbody>
